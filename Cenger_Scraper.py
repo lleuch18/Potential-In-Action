@@ -65,7 +65,10 @@ from selenium.webdriver.chrome.service import Service
 import os
 path = os.path.join("Users","Lasse","Onedrive","Skrivebord","Cenger_2.whtt")
 # for holding the resultant list
-element_list = []
+
+#Login Credentials for Cenger
+user_id = 86820601
+password = "torvet12"
 
 
 
@@ -83,7 +86,7 @@ driver.get(page_url)
 content = driver.find_element(By.ID,"content1")
 
 #Locate back_button within content
-tilbage_knap = test.find_element(By.CLASS_NAME,"back")
+tilbage_knap = content.find_element(By.CLASS_NAME,"back")
 #Get properties of back_button
 tilbage_knap.location
 tilbage_knap.size
@@ -91,12 +94,39 @@ tilbage_knap.size
 #tilbage_knap.click()
 
 #Locate log_in button in row
-#cengerContainer/DesktopSection/Content1/section productView/container customContainer/row/col-md-12/row/col-md-6/cold-md-12-loginForPrices
-login_button = driver.find_element(By.XPATH,"html[1]/body[1]/div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]")
+#[1]cengerContainer/[DesktopSection/Content1/section productView/container customContainer/row/col-md-12/row/col-md-6/cold-md-12-loginForPrices
+login_button = driver.find_element(By.XPATH,"html[1]/body[1]/div[1]/div[2]/div[3]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]")
 
+#Locate login button element (Cookies need to be handled)
 login_button.size
 login_button.location
 login_button.click()
+
+#Locate the login_menu element
+login_menu = driver.find_element(By.CLASS_NAME,"form")
+login_menu.location
+login_menu.size
+#Locate the username label
+id_label = login_menu.find_element(By.NAME,"Username")
+id_label.size
+#Locate the password label
+password_label = login_menu.find_element(By.NAME,"Password")
+password_label.size
+
+#Send login credentials
+id_label.send_keys(user_id)
+password_label.send_keys(password)
+
+#Locate login button within login form
+column = driver.find_element(By.NAME,"ExtUserForm")
+column.size
+column.tag_name
+#//Tagname[@AttibuteName = ‘value’]
+#login_menu_button = column.find_elements(By.XPATH,'//form[contains(text(),"Log ind")]')#//ExtUserForm[@class="button"');
+column.length
+#login_menu_button = column.find_elements(By.XPATH,'.//form[@Class="button"]')
+login_menu_button = column.find_element(By.CLASS_NAME,'button'); login_menu_button.size
+login_menu_button.click()
 
 #closing the driver
 #driver.close()
