@@ -10,6 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 import sys
 import time
+import Description_Module as dm
 # #%% Cenger Scraper Raw
 # #%%% Imports
 
@@ -70,12 +71,6 @@ path = os.path.join("Users","Lasse","Onedrive","Skrivebord","Cenger_2.whtt")
 user_id = 86820601
 password = "torvet12"
 
-
-
-
-
-
-
 page_url = "https://www.cenger.dk/varekatalog/3dfusion-wedge-100-stk-large-groen"
 # driver = webdriver.Chrome(ChromeDriverManager().install())
 driver = webdriver.Chrome()
@@ -92,6 +87,8 @@ tilbage_knap.location
 tilbage_knap.size
 #Click back_button
 #tilbage_knap.click()
+
+
 
 #Locate log_in button in row
 #[1]cengerContainer/[DesktopSection/Content1/section productView/container customContainer/row/col-md-12/row/col-md-6/cold-md-12-loginForPrices
@@ -128,5 +125,11 @@ column.length
 login_menu_button = column.find_element(By.CLASS_NAME,'button'); login_menu_button.size
 login_menu_button.click()
 
-#closing the driver
-#driver.close()
+
+
+cont = input("Close Chrome Session [Y/N]").upper()
+if cont == "Y":
+    #closing the driver
+    driver.close()
+
+dm.Locate_Description(page_url)
