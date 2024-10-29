@@ -97,15 +97,35 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 import os
+from selenium.webdriver.chrome.options import Options
 
-page_url = "https://www.cenger.dk/varekatalog/3dfusion-wedge-100-stk-large-groen"
+#page_url = "https://www.cenger.dk/varekatalog/3dfusion-wedge-100-stk-large-groen"
+page_url = "https://www.cenger.dk/"
 
-driver = webdriver.Chrome()
+
+chrome_options = Options()
+chrome_options.add_experimental_option("detach", True)
+driver = webdriver.Chrome(options=chrome_options)
+
+
 driver.get(page_url)
 
-content = driver.find_element(By.ID,"content1")
+menuBar = driver.find_element(By.CLASS_NAME, "menuBar");menuBar.size
+
+container = menuBar.find_element(By.CLASS_NAME, "container"); container.size
+
+row  = container.find_element(By.CLASS_NAME, "row"); row.size
+
+searchbar = row.find_element(By.ID, "instantSearch");searchbar.size
+
+searchbar = driver.find_element(By.CSS_SELECTOR,"input")
+searchbar.size
 
 
-description = content.find_element(By.CLASS_NAME,"description")
 
-print(description.text)
+#content = driver.find_element(By.ID,"content1")
+
+
+#description = content.find_element(By.CLASS_NAME,"description")
+
+#print(description.text)
