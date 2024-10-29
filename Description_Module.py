@@ -23,11 +23,16 @@ page_url = "https://www.cenger.dk/varekatalog/3dfusion-wedge-100-stk-large-groen
 
 
 
-def Locate_Description(page_url,Product_Page):    
-    content = Product_Page.find_element(By.ID,"content1")
+def Locate_Description(page_url): #,driver
+    # TODO: Correctly pass driver to this function
+    driver = webdriver.Chrome()
+    driver.get(page_url)
+
+    content = driver.find_element(By.ID,"content1")
 
     
-    description = content.find_element(By.ID,"description")
+    description = content.find_element(By.CLASS_NAME,"description")
+    print(description)
     
     return description.text
 
@@ -47,15 +52,15 @@ def Simulate_Page(page_url):
     The webpage containing the product text for scraping
     """
     
-    options = webdriver.ChromeOptions()
-    options.add_argument("–headless")    
-    options.add_argument("–disable-extensions")
-    driver = webdriver.Chrome()
+    #options = webdriver.ChromeOptions()
+    #options.add_argument("–headless")    
+    #options.add_argument("–disable-extensions")
+    #driver = webdriver.Chrome()
     
     
-    Product_Page = driver.get(page_url)
+    #Product_Page = driver.get(page_url)
     
-    text = Locate_Description(page_url,Product_Page)
+    text = Locate_Description(page_url)   #,driver
     
     print(text)
     

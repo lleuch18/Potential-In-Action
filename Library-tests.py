@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
+""" # -*- coding: utf-8 -*-
 """
-Spyder Editor
 
-This is a temporary script file.
 """
 import requests
 from bs4 import BeautifulSoup
@@ -80,3 +78,34 @@ caption = driver.find_elements(By.CLASS_NAME,"caption")
 
 #closing the driver
 driver.close()
+
+#region
+
+
+
+
+#endregion """
+
+import requests
+from bs4 import BeautifulSoup
+import sys
+import time
+
+import selenium
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+import os
+
+page_url = "https://www.cenger.dk/varekatalog/3dfusion-wedge-100-stk-large-groen"
+
+driver = webdriver.Chrome()
+driver.get(page_url)
+
+content = driver.find_element(By.ID,"content1")
+
+
+description = content.find_element(By.CLASS_NAME,"description")
+
+print(description.text)
