@@ -98,17 +98,25 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 import os
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
+
+import pandas as pd
 
 #page_url = "https://www.cenger.dk/varekatalog/3dfusion-wedge-100-stk-large-groen"
-page_url = "https://www.cenger.dk/"
 
+page_url = "https://www.cenger.dk/"
+data = pd.read_excel(r"C:\Users\Lasse\OneDrive\Skrivebord\Potential-In-Action\Web-Scraping\Data Cenger.xlsx")
+artikel_numre = data["Cenger varenr."]
+
+artikel_nr = artikel_numre[1]
 
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(options=chrome_options)
-
-
 driver.get(page_url)
+
+
+
 
 menuBar = driver.find_element(By.CLASS_NAME, "menuBar");menuBar.size
 
@@ -117,12 +125,24 @@ container = menuBar.find_element(By.CLASS_NAME, "container"); container.size
 row  = container.find_element(By.CLASS_NAME, "row"); row.size
 
 searchbar = row.find_element(By.ID, "instantSearch");searchbar.size
+searchbar.send_keys(artikel_nr)
+searchbar.send_keys(Keys.ENTER)
 
-searchbar = driver.find_element(By.CSS_SELECTOR,"input")
-searchbar.size
+product_desktopSection = driver.find_element(By.CLASS_NAME,"desktopSection")
+product_desktopSection.size
 
+product_row = driver.find_element(By.ID, "content1");product_row.size 
 
+product_container = product_row.find_element(By.CLASS_NAME, "productsContainer");product_container.size
+product_gridrow = product_container.find_element(By.CLASS_NAME,"gridRow")
+product_tableRow = product_gridrow.find_element(By.CLASS_NAME,"tableRow")
+product_tableRow.click()
 
+driver.find_element(By.CLASS_NAME,"container customContainer")
+#product_description = product_row.find_element(By.CLASS_NAME,"description");product_description.size
+#specific_text = product_description.find_element(By.TAG_NAME,"b")
+
+#print(product_description.text)
 #content = driver.find_element(By.ID,"content1")
 
 
