@@ -85,11 +85,32 @@ driver.close()
 
 
 #endregion """
-
+#%% TEMP Define Functions in Script
+def cenger_find_description(driver,artikel_nr):
+    menuBar = driver.find_element(By.CLASS_NAME, "menuBar");menuBar.size
+    
+    container = menuBar.find_element(By.CLASS_NAME, "container"); container.size
+    
+    row  = container.find_element(By.CLASS_NAME, "row"); row.size
+    
+    searchbar = row.find_element(By.ID, "instantSearch");searchbar.size
+    searchbar.send_keys(artikel_nr)
+    searchbar.send_keys(Keys.ENTER)
+    
+    product_desktopSection = driver.find_element(By.CLASS_NAME,"desktopSection");product_desktopSection.size
+    product_description = product_desktopSection.find_element(By.CLASS_NAME,'description')
+    specific_text = product_description.find_element(By.TAG_NAME,"b")
+    
+    #print(specific_text.text)
+    
+    
+    return specific_text.text
+#%% Testing Accuracy of Description Retrieval
 import requests
 from bs4 import BeautifulSoup
 import sys
 import time
+import random
 
 import selenium
 from selenium import webdriver
@@ -100,52 +121,74 @@ import os
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
+
 import pandas as pd
 
 #page_url = "https://www.cenger.dk/varekatalog/3dfusion-wedge-100-stk-large-groen"
 
 page_url = "https://www.cenger.dk/"
-data = pd.read_excel(r"C:\Users\Lasse\OneDrive\Skrivebord\Potential-In-Action\Web-Scraping\Data Cenger.xlsx")
+data = pd.read_excel(r"C:\Users\Lasse\OneDrive\Skrivebord\Potential-In-Action\Potential-In-Action\Data Cenger.xlsx")
 artikel_numre = data["Cenger varenr."]
+artikel_descriptions = data["Cenger beskrivelse"]
 
-artikel_nr = artikel_numre[1]
+artikel_start = 452
+artikel_end = 469
 
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(options=chrome_options)
-driver.get(page_url)
+#driver.get(page_url)
+
+test_success = {}
+
+cnt = 0
+
+for artikel in range(artikel_start,artikel_end):
+    driver.get(page_url)
+    
+    cnt = cnt+1
+    
+    artikel_nr = artikel_numre[artikel]
+    
+    description = cenger_find_description(driver,artikel_nr)
+    
+    print(f"At loop {cnt} for artikel {artikel_nr} description: \n {description}")
+    
+    
+    #housekeep
+    if description == artikel_descriptions[artikel]:
+        test_success[artikel] = 1
+    else:
+        test_success[artikel] = 0
+        
+    
+    time.sleep(random.randrange(20,35))
+        
+
+test_success
 
 
 
 
-menuBar = driver.find_element(By.CLASS_NAME, "menuBar");menuBar.size
-
-container = menuBar.find_element(By.CLASS_NAME, "container"); container.size
-
-row  = container.find_element(By.CLASS_NAME, "row"); row.size
-
-searchbar = row.find_element(By.ID, "instantSearch");searchbar.size
-searchbar.send_keys(artikel_nr)
-searchbar.send_keys(Keys.ENTER)
-
-product_desktopSection = driver.find_element(By.CLASS_NAME,"desktopSection")
-product_desktopSection.size
-
-product_row = driver.find_element(By.ID, "content1");product_row.size 
-
-product_container = product_row.find_element(By.CLASS_NAME, "productsContainer");product_container.size
-product_gridrow = product_container.find_element(By.CLASS_NAME,"gridRow")
-product_tableRow = product_gridrow.find_element(By.CLASS_NAME,"tableRow")
-product_tableRow.click()
-
-driver.find_element(By.CLASS_NAME,"container customContainer")
-#product_description = product_row.find_element(By.CLASS_NAME,"description");product_description.size
-#specific_text = product_description.find_element(By.TAG_NAME,"b")
-
-#print(product_description.text)
-#content = driver.find_element(By.ID,"content1")
 
 
-#description = content.find_element(By.CLASS_NAME,"description")
+#%% Section used for retrieving complete description of product
+# product_row = driver.find_element(By.ID, "content1");product_row.size 
 
-#print(description.text)
+# product_container = product_row.find_element(By.CLASS_NAME, "productsContainer");product_container.size
+
+# product_gridrow = product_container.find_element(By.CLASS_NAME,"gridRow")
+# product_tableRow = product_gridrow.find_element(By.CLASS_NAME,"tableRow")
+# product_tableRow.click()
+
+# driver.find_element(By.CLASS_NAME,"container customContainer")
+# #product_description = product_row.find_element(By.CLASS_NAME,"description");product_description.size
+# #specific_text = product_description.find_element(By.TAG_NAME,"b")
+
+# #print(product_description.text)
+# #content = driver.find_element(By.ID,"content1")
+
+
+# #description = content.find_element(By.CLASS_NAME,"description")
+
+# #print(description.text)
