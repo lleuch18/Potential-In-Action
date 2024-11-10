@@ -80,20 +80,40 @@ for window_handle in driver.window_handles:
         driver.switch_to.window(window_handle)
         break
 
-#Remove Popup
-#Locate Shadowhost
-shadow_host = driver.find_element(By.XPATH,"//*[starts-with(name(),'sleeknote-') and contains(name(),'top')]")
-shadow_host.size
 
-shadow_host = driver.find_element(By.XPATH, "//*[@id='aspnetForm']")
-test=driver.find_element(By.XPATH,"/html/body/sleeknote-q4qx0s-top")
-shadow_root = driver.execute_script('return arguments[0].shadowRoot', shadow_host)
-cookies_button = shadow_root.find_element(By.CSS_SELECTOR, '[data-testid=uc-accept-all-button]')
-cookies_button.click()
+
+#Remove Popup if present
+try:
+    #Site contains nested shadowroots NOTE: ShadowDOM doesn't support xpath
+    #Locate 1st Shadowhost
+    shadow_host_1st = wait.until(EC.presence_of_element_located((By.XPATH,"//*[starts-with(name(),'sleeknote-') and contains(name(),'top')]")))
+    #shadow_host_1st = driver.find_element(By.XPATH,"//*[starts-with(name(),'sleeknote-') and contains(name(),'top')]")
+    #Locate 1st shadowroot
+    shadow_root_1st = driver.execute_script('return arguments[0].shadowRoot', shadow_host_1st)       
+    #Locate 2nd shadowhost and 2nd shadowroot
+    shadow_host_2nd =  shadow_root_1st.find_element(By.CSS_SELECTOR, "sleeknote-form")
+    shadow_root_2nd = driver.execute_script('return arguments[0].shadowRoot', shadow_host_2nd)
     
+    #Locate popup close button and click
+    popup_close_button = wait.until(EC.element_to_be_clickable(shadow_root_2nd.find_element(By.CSS_SELECTOR,"#sleeknote-Step--1 > form > ul > li:nth-child(2) > div")))
+    #Despite Explicit wait still click not synchronized
+    time.sleep(1)
+    popup_close_button.click()
+except NameError:
+    print("Popup not detected")
+    
+#Find Description
+#Note: FULL XPATH FOR main_container
+try:
+    main_container = driver.find_element(By.XPATH,"/html/body/form[2]/div[4]")
+except NameError:
+    print("main_container not found. Consider switching from FULL XPATH")
+    
+content_container = main_container.find_element(By.XPATH,"//*[@id='ContentContainer']");content_container.size
+content = content_container.find_element(By.XPATH,"//*[@id='Content']");content.size
+onkeypress = content.find_element(By.XPATH,'//*[@id="Content"]/div[2]/div[3]')
 
-articles = driver.find_element(By.CLASS_NAME,"articles")
-articles_list = articles.find_element(By.CLASS_NAME,"articles-result")
-description = articles_list.find_element(By.CLASS_NAME,"truncate")
-
+description = onkeypress.find_element(By.XPATH,'//*[@id="ctl00_ContentPlaceHolder1_repAllBrandProductList_ctl01_ctlProduct_hypProductName"]')
 print(description.text)
+
+
