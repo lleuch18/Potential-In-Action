@@ -127,12 +127,15 @@ import pandas as pd
 #page_url = "https://www.cenger.dk/varekatalog/3dfusion-wedge-100-stk-large-groen"
 
 page_url = "https://www.cenger.dk/"
-data = pd.read_excel(r"C:\Users\Lasse\OneDrive\Skrivebord\Potential-In-Action\Potential-In-Action\Data Cenger.xlsx")
+data = pd.read_excel("C:/Users/Lasse/OneDrive/Skrivebord/Potential-In-Action/Web-Scraping/Data Cenger.xlsx")
 artikel_numre = data["Cenger varenr."]
 artikel_descriptions = data["Cenger beskrivelse"]
 
-artikel_start = 452
-artikel_end = 469
+artikel_start = 4
+artikel_end = 5
+
+test_meta_data = input("input test number")
+test_meta_data = f"Test nr. {test_meta_data} \narticle_start = {artikel_start} \narticle_end = {artikel_end}"
 
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
@@ -143,7 +146,7 @@ test_success = {}
 
 cnt = 0
 
-for artikel in range(artikel_start,artikel_end):
+for artikel in range(artikel_start,artikel_end+1):
     driver.get(page_url)
     
     cnt = cnt+1
@@ -162,10 +165,18 @@ for artikel in range(artikel_start,artikel_end):
         test_success[artikel] = 0
         
     
+        
     time.sleep(random.randrange(20,35))
         
+with open('Cenger.txt', 'w') as file:
+    file.write(test_meta_data)
+    
+    file.write(repr(test_success) + "\n\n\n")
 
 test_success
+
+print("test concluded")
+
 
 
 
