@@ -59,7 +59,7 @@ def basiq_scraper(driver,artikel_nr):
 
     driver.close()
     
-    return description.text
+    return str(description.text)
 
 #%% Cliniclands Scraper
 def cliniclands_description_scraper(driver,artikel_nr):    
@@ -89,7 +89,7 @@ def cliniclands_description_scraper(driver,artikel_nr):
     description = articles_list.find_element(By.XPATH,"//tbody[1]/tr[1]/td[@class='name']/div/span/a")
    # description = description_path.find_element(By.CLASS_NAME,"truncate")
     
-    return description.text
+    return str(description.text)
 #%% Plandent Scraper
 def plandent_description_scraper(driver,artikel_nr):
     
@@ -172,7 +172,7 @@ def plandent_description_scraper(driver,artikel_nr):
     
     driver.close()
     
-    return description
+    return str(description.text)
     
     
     
@@ -257,4 +257,4 @@ def cenger_description_scraper(driver,artikel_nr,login=False,user_id=None,passwo
     
     
     
-    return description.text
+    return str(description.text)

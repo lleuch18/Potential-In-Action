@@ -38,25 +38,25 @@ def run_tests():
     match competitor:
         case "B":
             page_url = "https://www.basiqdental.dk/da_DK/"
-            data = pd.read_excel("C:/users/lasse/onedrive/skrivebord/potential-in-action/web-scraping/Basiq Data set.xlsx")
+            data = pd.read_excel("C:/users/lasse/onedrive/skrivebord/potential-in-action/web-scraping/Data/Basiq Data set.xlsx")
             artikel_numre = data["Basiq varenr."]
             artikel_descriptions = data["Basiq beskrivelse"]
             competitor = "Basiq"
         case "C":
              page_url = "https://www.cenger.dk/"         
-             data = pd.read_excel("C:/Users/lasse/OneDrive/Skrivebord/potential-in-action/web-scraping/Data Cenger.xlsx")
+             data = pd.read_excel("C:/Users/lasse/OneDrive/Skrivebord/potential-in-action/web-scraping/Data/Data Cenger.xlsx")
              artikel_numre = data["Cenger varenr."]
              artikel_descriptions = data["Cenger beskrivelse"]
              competitor = "Cenger"
         case "CL":
             page_url = "https://www.cliniclands.dk/"
-            data = pd.read_excel("C:/users/lasse/OneDrive/Skrivebord/potential-in-action/web-scraping/Data Cliniclands 24.10.2024.xlsx")
+            data = pd.read_excel("C:/users/lasse/OneDrive/Skrivebord/potential-in-action/web-scraping/Data/Data Cliniclands 24.10.2024.xlsx")
             artikel_numre = data["Cliniclands varenr."]
             artikel_descriptions = data["Cliniclands beskrivelse"]
             competitor = "Cliniclands"
         case "P":
             page_url = "https://plandent.dk/"
-            data = pd.read_excel("C:/users/lasse/OneDrive/Skrivebord/potential-in-action/web-scraping/Plandent.xlsx")
+            data = pd.read_excel("C:/users/lasse/OneDrive/Skrivebord/potential-in-action/web-scraping/Data/Plandent.xlsx")
             artikel_numre = data["Plandent varenr."]
             artikel_descriptions = data["Plandent beskrivelse"]
             competitor = "Plandent"

@@ -12,7 +12,7 @@ import snowflake.connector
 import streamlit_option_menu
 from streamlit_option_menu import option_menu
 
-import GUI_Run_Tests as test
+
 
 import os 
 
@@ -36,6 +36,8 @@ import Scraper_Module as sm
 from importlib import reload
 #Reload Scraper Module to implement code changes
 reload(sm)
+import GUI_Run_Tests as test
+reload(test)
 
 
 with st.sidebar:
@@ -46,19 +48,19 @@ with st.sidebar:
     
     article_start = st.number_input("Begin at article:",step=1,value=None)
     
-    article_end = st.number_input("End at article:",step=1,value=None)
-    
-    
+    article_end = st.number_input("End at article:",step=1,value=None)    
+   
     
     selected = option_menu(
     menu_title = "Main Menu",
-    options = ['Perform Test','Perform Data Collection'],
+    options = ['Perform Data Collection','Perform Test'],
     icons = ["gem","gear-wide-connected"],
     menu_icon = "cast",
     default_index = 0,
     #orientation = "horizontal",
 )
-    
+
+
     
    
 if selected == "Perform Test":
@@ -69,6 +71,7 @@ if selected == "Perform Test":
 
     with st.container():
         c1.write("c1")
+        #st.button("Plain_button")
         # c2.write("c2")
 
     # with st.container():
@@ -76,22 +79,10 @@ if selected == "Perform Test":
         # c4.write("c4")
 
     with c1:
-        match options:
-            case "Basiq":
-                varenr = 'Basiq Varenummer'
-                beskrivelse = 'Basiq Beskrivelse'                
-            case "Cenger":
-                varenr = 'Cenger Varenummer'
-                beskrivelse = 'Cenger Beskrivelse'                
-            case "Cliniclands":
-                varenr = 'Cliniclands Varenummer'
-                beskrivelse = 'Cliniclands Beskrivelse'                
-            case "Plandent":
-                varenr = 'Plandent Varenummer'
-                beskrivelse = 'Plandent Beskrivelse'
-                
-        table_data = pd.DataFrame(columns=[varenr,beskrivelse])
-        st.dataframe(table_data)
+        varenr,beskrivelse,page_url, data, artikel_numre, artikel_descriptions = test.comptetitor_variables(options)
+              
+        table_data = pd.DataFrame.from_dict([{varenr: "start", beskrivelse: "start"}])
+        display_table = st.dataframe(table_data)
     
     cnt = 0    
     for artikel in range(article_start,article_end+1):  
@@ -103,43 +94,15 @@ if selected == "Perform Test":
         
         cnt = cnt+1
         
-        description,article = test.run_tests(article_start,article_end,competitor=options,test_meta_data=test_meta_data)
+        description,artikel_nr = test.run_tests(data,driver,options,artikel_numre,artikel)
         
-        table_data.add_rows(pd.DataFrame({varenr: article, beskrivelse: description})) 
+        display_table.add_rows(pd.DataFrame.from_dict([{varenr: str(artikel_nr), beskrivelse: str(description)}])) 
         
         
-           
-    # with c2:
-    #     chart_data = pd.DataFrame(np.random.randn(20, 3),columns=["a", "b", "c"])
-    #     st.bar_chart(chart_data)
+        driver.close()
+        
+        time.sleep(random.randrange(20,35))
+        
 
-    # with c3:
-    #     chart_data = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
-    #     st.line_chart(chart_data)
 
-    # with c4:
-    #     chart_data = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
-    #     st.line_chart(chart_data)
-        
-    
-# if selected == "Warehouse":
-#     st.subheader(f"**You Have selected {selected}**")
-#     my_cnx = snowflake.connector.connect(**st.secrets["snowflake"])
-#     my_cur = my_cnx.cursor()
-#     # run a snowflake query and put it all in a var called my_catalog
-#     my_cur.execute("select * from SWEATSUITS")
-#     my_catalog = my_cur.fetchall()
-#     st.dataframe(my_catalog)
-#     q1 = st.text_input('Write your query','')
-#     st.button('Run Query')
-#     if not q1:
-#       st.error('Please write a query')
-#     else:
-#       my_cur.execute(q1)
-#       my_catalog = my_cur.fetchall()
-#       st.dataframe(my_catalog)
 
-    
-if selected == "Contact":
-    st.subheader(f"**You Have selected {selected}**")
-    
