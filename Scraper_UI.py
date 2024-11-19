@@ -53,8 +53,8 @@ with st.sidebar:
     
     selected = option_menu(
     menu_title = "Main Menu",
-    options = ['Perform Data Collection','Perform Test'],
-    icons = ["gem","gear-wide-connected"],
+    options = ['Set test parameters','Perform Test'],
+    icons = ["gear-wide-connected","gem"],
     menu_icon = "cast",
     default_index = 0,
     #orientation = "horizontal",
@@ -80,9 +80,11 @@ if selected == "Perform Test":
 
     with c1:
         varenr,beskrivelse,page_url, data, artikel_numre, artikel_descriptions = test.comptetitor_variables(options)
-              
-        table_data = pd.DataFrame.from_dict([{varenr: "start", beskrivelse: "start"}])
-        display_table = st.dataframe(table_data)
+            
+        table_data = pd.DataFrame.from_dict([{varenr: "start", beskrivelse: "start             "}])
+        
+        #column_config=st.column_config.Column(label=None, width="large", help=None, disabled=None, required=None)  
+        display_table = st.dataframe(table_data                                     )
     
     cnt = 0    
     for artikel in range(article_start,article_end+1):  
